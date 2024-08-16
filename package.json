@@ -47,7 +47,7 @@
     "configuration": {
       "type": "object",
       "properties": {
-        "arrayIndexInlay.enable": {
+        "arrayIndexInlay.enabled": {
           "type": "boolean",
           "default": true,
           "description": "Enable inlay hints"

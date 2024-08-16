@@ -48,10 +48,9 @@ const { activate, deactivate } = defineExtension(() => {
       },
     },
     (editor): DecorationOptions[] => {
-      if (
-        !config.enable
-        || !SupportedLanguages.includes(editor.document.languageId)
-      ) {
+      if (!config.enabled)
+        return []
+      if (!SupportedLanguages.includes(editor.document.languageId)) {
         return []
       }
 
@@ -131,7 +130,7 @@ const { activate, deactivate } = defineExtension(() => {
 
   useCommand(
     commands.toggle,
-    () => config.$update('enable', !config.enable, ConfigurationTarget.Global),
+    () => config.$update('enabled', !config.enabled, ConfigurationTarget.Global),
   )
 })
 
