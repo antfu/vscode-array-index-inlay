@@ -1,6 +1,6 @@
 import { defineExtension, useActiveTextEditor, useCommand } from 'reactive-vscode'
 import type { DecorationOptions } from 'vscode'
-import { Range } from 'vscode'
+import { ConfigurationTarget, Range } from 'vscode'
 import { parseSync } from '@babel/core'
 import traverse from '@babel/traverse'
 // @ts-expect-error missing types
@@ -8,6 +8,7 @@ import preset from '@babel/preset-typescript'
 import { logger } from './utils'
 import { config } from './config'
 import { useEditorDecorations } from './vendor/decorations'
+import { commands } from './generated/meta'
 
 const SupportedLanguages = [
   'javascript',
@@ -128,7 +129,10 @@ const { activate, deactivate } = defineExtension(() => {
     },
   )
 
-  useCommand('arrayIndexInlay.toggleEnable', () => config.enable = !config.enable)
+  useCommand(
+    commands.toggle,
+    () => config.$update('enable', !config.enable, ConfigurationTarget.Global),
+  )
 })
 
 export { activate, deactivate }

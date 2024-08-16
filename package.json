@@ -39,8 +39,9 @@
   "contributes": {
     "commands": [
       {
-        "title": "Array Index Inlay: Toggle enable",
-        "command": "arrayIndexInlay.toggleEnable"
+        "category": "Array Index Inlay",
+        "title": "Toggle",
+        "command": "arrayIndexInlay.toggle"
       }
     ],
     "configuration": {
@@ -49,7 +50,7 @@
         "arrayIndexInlay.enable": {
           "type": "boolean",
           "default": true,
-          "description": "Whether to enable inlay hints"
+          "description": "Enable inlay hints"
         },
         "arrayIndexInlay.minLength": {
           "type": "number",
