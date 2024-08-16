@@ -30,8 +30,8 @@ const { activate, deactivate } = defineExtension(() => {
       before: {
         margin: [
           'auto 0;',
-          'position: absolute;',
-          'top: 50%;',
+          'position: relative;',
+          'bottom: 10%;',
           'width: max-content;',
           'text-align: right;',
           'border-radius: 0.2em;',
