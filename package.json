@@ -37,10 +37,20 @@
     "onStartupFinished"
   ],
   "contributes": {
-    "commands": [],
+    "commands": [
+      {
+        "title": "Array Index Inlay: Toggle enable",
+        "command": "arrayIndexInlay.toggleEnable"
+      }
+    ],
     "configuration": {
       "type": "object",
       "properties": {
+        "arrayIndexInlay.enable": {
+          "type": "boolean",
+          "default": true,
+          "description": "Whether to enable inlay hints"
+        },
         "arrayIndexInlay.minLength": {
           "type": "number",
           "default": 15,

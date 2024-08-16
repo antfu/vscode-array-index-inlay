@@ -1,4 +1,4 @@
-import { defineExtension, useActiveTextEditor } from 'reactive-vscode'
+import { defineExtension, useActiveTextEditor, useCommand } from 'reactive-vscode'
 import type { DecorationOptions } from 'vscode'
 import { Range } from 'vscode'
 import { parseSync } from '@babel/core'
@@ -47,7 +47,10 @@ const { activate, deactivate } = defineExtension(() => {
       },
     },
     (editor): DecorationOptions[] => {
-      if (!SupportedLanguages.includes(editor.document.languageId)) {
+      if (
+        !config.enable
+        || !SupportedLanguages.includes(editor.document.languageId)
+      ) {
         return []
       }
 
@@ -124,6 +127,8 @@ const { activate, deactivate } = defineExtension(() => {
       return items
     },
   )
+
+  useCommand('arrayIndexInlay.toggleEnable', () => config.enable = !config.enable)
 })
 
 export { activate, deactivate }
