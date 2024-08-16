@@ -63,7 +63,7 @@ const { activate, deactivate } = defineExtension(() => {
           offset = -prefix.length
         }
         else if (['vue', 'svelte'].includes(editor.document.languageId)) {
-          const scriptContentRegex = /<script(?:\s+setup)?(?:\s+lang="\w+")?>([\s\S]*?)<\/script>/
+          const scriptContentRegex = /<script[^>]*>([\s\S]*?)<\/script>/
 
           const match = scriptContentRegex.exec(text)
 
