@@ -1,4 +1,4 @@
-import { defineExtension, useActiveTextEditor, useEditorDecorations } from 'reactive-vscode'
+import { defineExtension, useActiveTextEditor } from 'reactive-vscode'
 import type { DecorationOptions } from 'vscode'
 import { Range } from 'vscode'
 import { parseSync } from '@babel/core'
@@ -7,6 +7,7 @@ import traverse from '@babel/traverse'
 import preset from '@babel/preset-typescript'
 import { logger } from './utils'
 import { config } from './config'
+import { useEditorDecorations } from './vendor/decorations'
 
 const SupportedLanguages = [
   'javascript',
@@ -31,20 +32,17 @@ const { activate, deactivate } = defineExtension(() => {
           'width: max-content;',
           'text-align: right;',
           'border-radius: 0.2em;',
-          'padding: 0 0.4em;',
+          'padding: 0 0.3em;',
           'color: var(--vscode-editorInlayHint-foreground, #888);',
           'background: var(--vscode-editorInlayHint-background, #8885);',
-          'font-size: 0.8em;',
-          'transform: translate(-100%, -50%);',
+          'font-size: 0.7em;',
+          'transform: translate(calc(-100% - 0.05em), -50%);',
           'line-height: 1.5em;',
         ].join(' '),
       },
     },
-    (): DecorationOptions[] => {
-      if (!editor.value) {
-        return []
-      }
-      if (!SupportedLanguages.includes(editor.value.document.languageId)) {
+    (editor): DecorationOptions[] => {
+      if (!SupportedLanguages.includes(editor.document.languageId)) {
         return []
       }
 
@@ -52,9 +50,9 @@ const { activate, deactivate } = defineExtension(() => {
 
       try {
         const ast = parseSync(
-          editor.value.document.getText(),
+          editor.document.getText(),
           {
-            filename: editor.value.document.uri.fsPath,
+            filename: editor.document.uri.fsPath,
             presets: [preset],
             babelrc: false,
           },
@@ -79,7 +77,7 @@ const { activate, deactivate } = defineExtension(() => {
               if (!el) {
                 return
               }
-              const pos = editor.value!.document.positionAt(el.start!)
+              const pos = editor.document.positionAt(el.start!)
               items.push({
                 range: new Range(pos, pos),
                 renderOptions: {
