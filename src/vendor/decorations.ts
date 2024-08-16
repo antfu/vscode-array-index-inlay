@@ -3,7 +3,7 @@
 
 import type { MaybeRef, MaybeRefOrGetter, Nullable } from 'reactive-vscode'
 import { toValue, useDisposable, watchEffect } from 'reactive-vscode'
-import type { DecorationOptions, DecorationRenderOptions, Disposable, Range, TextEditor, TextEditorDecorationType } from 'vscode'
+import type { DecorationOptions, DecorationRenderOptions, Range, TextEditor, TextEditorDecorationType } from 'vscode'
 import { window, workspace } from 'vscode'
 
 export interface UseEditorDecorationsOptions {

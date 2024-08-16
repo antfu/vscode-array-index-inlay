@@ -17,6 +17,13 @@ Show array index inlay hints for large arrays. Currently supports JavaScript and
 <img width="696" alt="Screenshot 2024-08-16 at 02 48 05" src="https://github.com/user-attachments/assets/6b7af3e5-1186-4526-bb9d-a24a32ffaa24">
 </p>
 
+## Configs
+
+| Name                         | Description                                         | Default |
+| ---------------------------- | --------------------------------------------------- | ------- |
+| `arrayIndexInlay.minLength`  | Minimum length of the array to show the index hints | `20`    |
+| `arrayIndexInlay.startIndex` | Start index of the array                            | `0`     |
+
 ## Sponsors
 
 <p align="center">
