@@ -89,10 +89,11 @@ const { activate, deactivate } = defineExtension(() => {
 
         const indexBase = config.startIndex
         const minLength = config.minLength
+        const minLines = config.minLines
 
         traverse(ast, {
           ArrayExpression(path) {
-            if (path.node.elements.length < minLength && (path.node.loc!.end.line - path.node.loc!.start.line) < config.minLines) {
+            if (path.node.elements.length < minLength && (path.node.loc!.end.line - path.node.loc!.start.line) < minLines) {
               return
             }
             if (!config.allowSpread && path.node.elements.some(el => el?.type === 'SpreadElement')) {
