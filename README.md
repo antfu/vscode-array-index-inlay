@@ -10,7 +10,7 @@
 </p>
 
 <p align="center">
-Show array index inlay hints for large arrays. Currently supports JavaScript and TypeScript..<br>
+Show array index inlay hints for large arrays. Currently supports JavaScript and TypeScript.<br>
 </p>
 
 <p align="center">

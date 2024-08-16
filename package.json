@@ -48,7 +48,7 @@
         },
         "arrayIndexInlay.minLines": {
           "type": "number",
-          "default": 40,
+          "default": 30,
           "description": "Minimum lines of array to show inlay hints"
         },
         "arrayIndexInlay.startIndex": {

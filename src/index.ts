@@ -14,6 +14,9 @@ const SupportedLanguages = [
   'typescript',
   'javascriptreact',
   'typescriptreact',
+  'json',
+  'jsonc',
+  'json5',
   // TODO: more languages
 ]
 
@@ -49,8 +52,17 @@ const { activate, deactivate } = defineExtension(() => {
       const items: DecorationOptions[] = []
 
       try {
+        let text = editor.document.getText()
+        let offset = 0
+        // Workaround for JSON
+        if (['json', 'jsonc', 'json5'].includes(editor.document.languageId)) {
+          const prefix = 'const x = '
+          text = prefix + text
+          offset = -prefix.length
+        }
+
         const ast = parseSync(
-          editor.document.getText(),
+          text,
           {
             filename: editor.document.uri.fsPath,
             presets: [preset],
@@ -78,7 +90,7 @@ const { activate, deactivate } = defineExtension(() => {
               if (!el) {
                 return
               }
-              const pos = editor.document.positionAt(el.start!)
+              const pos = editor.document.positionAt(el.start! + offset)
               items.push({
                 range: new Range(pos, pos),
                 renderOptions: {
