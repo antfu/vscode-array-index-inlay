@@ -2,7 +2,7 @@
   "publisher": "antfu",
   "name": "array-index-inlay",
   "displayName": "Array Index Inlay",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "packageManager": "pnpm@9.7.1",
   "description": "Inlay hints for index of large arrays",
@@ -43,13 +43,23 @@
       "properties": {
         "arrayIndexInlay.minLength": {
           "type": "number",
-          "default": 20,
+          "default": 15,
           "description": "Minimum length of array to show inlay hints"
+        },
+        "arrayIndexInlay.minLines": {
+          "type": "number",
+          "default": 30,
+          "description": "Minimum lines of array to show inlay hints"
         },
         "arrayIndexInlay.startIndex": {
           "type": "number",
           "default": 0,
           "description": "Start index of the array, default to 0"
+        },
+        "arrayIndexInlay.allowSpread": {
+          "type": "boolean",
+          "default": false,
+          "description": "Show inlay hints even there are spread operators in the array (will use ? for the items after spread)"
         }
       }
     }

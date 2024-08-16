@@ -1,3 +1,4 @@
 import { useLogger } from 'reactive-vscode'
+import { displayName } from './generated/meta'
 
-export const logger = useLogger('array-index-inlay')
+export const logger = useLogger(displayName)

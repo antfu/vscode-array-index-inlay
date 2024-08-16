@@ -14,6 +14,9 @@ const SupportedLanguages = [
   'typescript',
   'javascriptreact',
   'typescriptreact',
+  'json',
+  'jsonc',
+  'json5',
   'vue',
   'svelte',
   // TODO: more languages
@@ -50,27 +53,29 @@ const { activate, deactivate } = defineExtension(() => {
 
       const items: DecorationOptions[] = []
 
-      let code = ''
-      let offset = 0
-      const documentText = editor.document.getText()
-
-      if (['vue', 'svelte'].includes(editor.document.languageId)) {
-        const scriptContentRegex = /<script(?:\s+setup)?(?:\s+lang="\w+")?>([\s\S]*?)<\/script>/
-
-        const match = scriptContentRegex.exec(documentText)
-
-        if (match) {
-          code = match[1]
-          offset = documentText.indexOf(code)
-        }
-      }
-      else {
-        code = documentText
-      }
-
       try {
+        let text = editor.document.getText()
+        let offset = 0
+        // Workaround for JSON
+        if (['json', 'jsonc', 'json5'].includes(editor.document.languageId)) {
+          const prefix = 'const x = '
+          text = prefix + text
+          offset = -prefix.length
+        }
+        else if (['vue', 'svelte'].includes(editor.document.languageId)) {
+          const scriptContentRegex = /<script(?:\s+setup)?(?:\s+lang="\w+")?>([\s\S]*?)<\/script>/
+
+          const match = scriptContentRegex.exec(text)
+
+          if (match) {
+            const scriptContent = match[1]
+            offset = text.indexOf(scriptContent)
+            text = scriptContent
+          }
+        }
+
         const ast = parseSync(
-          code,
+          text,
           {
             filename: editor.document.uri.fsPath,
             presets: [preset],
@@ -87,12 +92,13 @@ const { activate, deactivate } = defineExtension(() => {
 
         traverse(ast, {
           ArrayExpression(path) {
-            if (path.node.elements.length < minLength) {
+            if (path.node.elements.length < minLength && (path.node.loc!.end.line - path.node.loc!.start.line) < config.minLines) {
               return
             }
-            if (path.node.elements.some(el => el?.type === 'SpreadElement')) {
+            if (!config.allowSpread && path.node.elements.some(el => el?.type === 'SpreadElement')) {
               return
             }
+            let hasSpread = false
             path.node.elements.forEach((el, index) => {
               if (!el) {
                 return
@@ -102,10 +108,13 @@ const { activate, deactivate } = defineExtension(() => {
                 range: new Range(pos, pos),
                 renderOptions: {
                   before: {
-                    contentText: `#${index + indexBase}`,
+                    contentText: `${hasSpread ? '?' : '#'}${index + indexBase}`,
                   },
                 },
               })
+              if (el.type === 'SpreadElement') {
+                hasSpread = true
+              }
             })
           },
         })
