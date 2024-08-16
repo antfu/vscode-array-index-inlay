@@ -17,6 +17,8 @@ const SupportedLanguages = [
   'json',
   'jsonc',
   'json5',
+  'vue',
+  'svelte',
   // TODO: more languages
 ]
 
@@ -54,11 +56,20 @@ const { activate, deactivate } = defineExtension(() => {
       try {
         let text = editor.document.getText()
         let offset = 0
-        // Workaround for JSON
+
         if (['json', 'jsonc', 'json5'].includes(editor.document.languageId)) {
           const prefix = 'const x = '
           text = prefix + text
           offset = -prefix.length
+        }
+        else if (['vue', 'svelte'].includes(editor.document.languageId)) {
+          const match = /(<script[^>]*>)([\s\S]*?)<\/script>/.exec(text)
+
+          if (match) {
+            const scriptContent = match[2]
+            offset = match.index + match[1].length
+            text = scriptContent
+          }
         }
 
         const ast = parseSync(
