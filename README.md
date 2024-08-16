@@ -19,10 +19,12 @@ Show array index inlay hints for large arrays. Currently supports JavaScript and
 
 ## Configs
 
-| Name                         | Description                                         | Default |
-| ---------------------------- | --------------------------------------------------- | ------- |
-| `arrayIndexInlay.minLength`  | Minimum length of the array to show the index hints | `20`    |
-| `arrayIndexInlay.startIndex` | Start index of the array                            | `0`     |
+| Name                          | Description                                                   | Default |
+| ----------------------------- | ------------------------------------------------------------- | ------- |
+| `arrayIndexInlay.minLength`   | Minimum length of the array to show the index hints           | `15`    |
+| `arrayIndexInlay.minLines`    | Minimum lines of the array to show the index hints            | `30`    |
+| `arrayIndexInlay.startIndex`  | Start index of the array                                      | `0`     |
+| `arrayIndexInlay.allowSpread` | Show inlay hints even there are spread operators in the array | `false` |
 
 ## Sponsors
 

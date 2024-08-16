@@ -67,12 +67,13 @@ const { activate, deactivate } = defineExtension(() => {
 
         traverse(ast, {
           ArrayExpression(path) {
-            if (path.node.elements.length < minLength) {
+            if (path.node.elements.length < minLength && (path.node.loc!.end.line - path.node.loc!.start.line) < config.minLines) {
               return
             }
-            if (path.node.elements.some(el => el?.type === 'SpreadElement')) {
+            if (!config.allowSpread && path.node.elements.some(el => el?.type === 'SpreadElement')) {
               return
             }
+            let hasSpread = false
             path.node.elements.forEach((el, index) => {
               if (!el) {
                 return
@@ -82,10 +83,13 @@ const { activate, deactivate } = defineExtension(() => {
                 range: new Range(pos, pos),
                 renderOptions: {
                   before: {
-                    contentText: `#${index + indexBase}`,
+                    contentText: `${hasSpread ? '?' : '#'}${index + indexBase}`,
                   },
                 },
               })
+              if (el.type === 'SpreadElement') {
+                hasSpread = true
+              }
             })
           },
         })
