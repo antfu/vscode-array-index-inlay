@@ -31,7 +31,7 @@
     "res/*"
   ],
   "engines": {
-    "vscode": "^1.92.0"
+    "vscode": "^1.90.0"
   },
   "activationEvents": [
     "onStartupFinished"
@@ -89,15 +89,15 @@
     "release": "bumpp && nr publish"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^2.25.2",
+    "@antfu/eslint-config": "^2.26.0",
     "@antfu/ni": "^0.22.4",
     "@babel/core": "^7.25.2",
     "@babel/preset-typescript": "^7.24.7",
     "@babel/traverse": "^7.25.3",
     "@types/babel__core": "^7.20.5",
     "@types/node": "^22.3.0",
-    "@types/vscode": "^1.92.0",
-    "@vscode/vsce": "^2.32.0",
+    "@types/vscode": "1.90.0",
+    "@vscode/vsce": "^3.0.0",
     "acorn": "^8.12.1",
     "acorn-loose": "^8.4.0",
     "acorn-walk": "^8.3.3",
