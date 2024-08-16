@@ -14,6 +14,8 @@ const SupportedLanguages = [
   'typescript',
   'javascriptreact',
   'typescriptreact',
+  'vue',
+  'svelte',
   // TODO: more languages
 ]
 
@@ -48,9 +50,27 @@ const { activate, deactivate } = defineExtension(() => {
 
       const items: DecorationOptions[] = []
 
+      let code = ''
+      let offset = 0
+      const documentText = editor.document.getText()
+
+      if (['vue', 'svelte'].includes(editor.document.languageId)) {
+        const scriptContentRegex = /<script(?:\s+setup)?(?:\s+lang="\w+")?>([\s\S]*?)<\/script>/
+
+        const match = scriptContentRegex.exec(documentText)
+
+        if (match) {
+          code = match[1]
+          offset = documentText.indexOf(code)
+        }
+      }
+      else {
+        code = documentText
+      }
+
       try {
         const ast = parseSync(
-          editor.document.getText(),
+          code,
           {
             filename: editor.document.uri.fsPath,
             presets: [preset],
@@ -77,7 +97,7 @@ const { activate, deactivate } = defineExtension(() => {
               if (!el) {
                 return
               }
-              const pos = editor.document.positionAt(el.start!)
+              const pos = editor.document.positionAt(el.start! + offset)
               items.push({
                 range: new Range(pos, pos),
                 renderOptions: {
