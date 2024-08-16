@@ -31,7 +31,7 @@
     "res/*"
   ],
   "engines": {
-    "vscode": "^1.92.0"
+    "vscode": "^1.91.0"
   },
   "activationEvents": [
     "onStartupFinished"
