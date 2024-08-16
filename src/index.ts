@@ -50,9 +50,8 @@ const { activate, deactivate } = defineExtension(() => {
     (editor): DecorationOptions[] => {
       if (!config.enabled)
         return []
-      if (!SupportedLanguages.includes(editor.document.languageId)) {
+      if (!SupportedLanguages.includes(editor.document.languageId))
         return []
-      }
 
       const items: DecorationOptions[] = []
 
@@ -99,6 +98,7 @@ const { activate, deactivate } = defineExtension(() => {
             if (!config.allowSpread && path.node.elements.some(el => el?.type === 'SpreadElement')) {
               return
             }
+            const digits = path.node.elements.length.toString().length
             let hasSpread = false
             path.node.elements.forEach((el, index) => {
               if (!el) {
@@ -109,7 +109,7 @@ const { activate, deactivate } = defineExtension(() => {
                 range: new Range(pos, pos),
                 renderOptions: {
                   before: {
-                    contentText: `${hasSpread ? '?' : '#'}${index + indexBase}`,
+                    contentText: `${hasSpread ? '?' : '#'}${index + indexBase}`.padStart(digits + 1, ' '),
                   },
                 },
               })
