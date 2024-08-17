@@ -2,7 +2,7 @@
   "publisher": "antfu",
   "name": "array-index-inlay",
   "displayName": "Array Index Inlay",
-  "version": "0.2.3",
+  "version": "0.3.0",
   "private": true,
   "packageManager": "pnpm@9.7.1",
   "description": "Inlay hints for index of large arrays",
