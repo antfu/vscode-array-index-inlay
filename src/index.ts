@@ -1,6 +1,6 @@
-import { defineExtension, useActiveTextEditor, useCommand } from 'reactive-vscode'
+import { defineExtension, useActiveTextEditor, useCommand, useStatusBarItem } from 'reactive-vscode'
 import type { DecorationOptions } from 'vscode'
-import { ConfigurationTarget, Range } from 'vscode'
+import { ConfigurationTarget, Range, StatusBarAlignment } from 'vscode'
 import { parseSync } from '@babel/core'
 import traverse from '@babel/traverse'
 // @ts-expect-error missing types
@@ -8,7 +8,7 @@ import preset from '@babel/preset-typescript'
 import { logger } from './utils'
 import { config } from './config'
 import { useEditorDecorations } from './vendor/decorations'
-import { commands } from './generated/meta'
+import { commands, name } from './generated/meta'
 
 const SupportedLanguages = [
   'javascript',
@@ -143,6 +143,15 @@ const { activate, deactivate } = defineExtension(() => {
     commands.toggle,
     () => config.$update('enabled', !config.enabled, ConfigurationTarget.Global),
   )
+
+  useStatusBarItem({
+    alignment: StatusBarAlignment.Right,
+    priority: 100,
+    id: name,
+    text: '[#23]',
+    tooltip: 'Toggle array index inlay hints',
+    command: commands.toggle,
+  }).show()
 })
 
 export { activate, deactivate }
