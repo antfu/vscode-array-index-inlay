@@ -35,6 +35,7 @@ Show array index inlay hints for large arrays.<br>
 - JSON / JSONC / JSON5
 - Vue
 - Svelte
+- Astro
 
 ## Sponsors
 

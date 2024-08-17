@@ -20,6 +20,7 @@ const SupportedLanguages = [
   'json5',
   'vue',
   'svelte',
+  'astro',
   // TODO: more languages
 ]
 
@@ -66,6 +67,15 @@ const { activate, deactivate } = defineExtension(() => {
         }
         else if (['vue', 'svelte'].includes(editor.document.languageId)) {
           const match = /(<script[^>]*>)([\s\S]*?)<\/script>/.exec(text)
+
+          if (match) {
+            const scriptContent = match[2]
+            offset = match.index + match[1].length
+            text = scriptContent
+          }
+        }
+        else if (['astro'].includes(editor.document.languageId)) {
+          const match = /(---)([\s\S]*?)---/.exec(text)
 
           if (match) {
             const scriptContent = match[2]
