@@ -71,6 +71,35 @@
           "type": "boolean",
           "default": false,
           "description": "Show inlay hints even there are spread operators in the array (will use ? for the items after spread)"
+        },
+        "arrayIndexInlay.depthIndicator": {
+          "type": "string",
+          "default": "Simple",
+          "description": "Show a depth indicator for each level of array",
+          "enum": [
+            "Off",
+            "Simple",
+            "Top-Bottom, Left-Right",
+            "Top-Bottom, Right-Left",
+            "Bottom-Top, Left-Right",
+            "Bottom-Top, Right-Left",
+            "Left-Right, Top-Bottom",
+            "Left-Right, Bottom-Top",
+            "Right-Left, Top-Bottom",
+            "Right-Left, Bottom-Top"
+          ],
+          "enumDescriptions": [
+            "No depth indicator, shows a # for each index",
+            "Shows 3 levels of depth indicators, ⸱ ꞉ ⋮ then + beyond that",
+            "⠁ ⠃ ⠇ ⡇ ⡏ ⡟ ⡿ ⣿ Top-Bottom, Left-Right",
+            "⠈ ⠘ ⠸ ⢸ ⢹ ⢻ ⢿ ⣿ Top-Bottom, Right-Left",
+            "⡀ ⡄ ⡆ ⡇ ⣇ ⣧ ⣷ ⣿ Bottom-Top, Left-Right",
+            "⢀ ⢠ ⢰ ⢸ ⣸ ⣼ ⣾ ⣿ Bottom-Top, Right-Left",
+            "⠁ ⠉ ⠋ ⠛ ⠟ ⠿ ⡿ ⣿ Left-Right, Top-Bottom",
+            "⠈ ⠉ ⠙ ⠛ ⠻ ⠿ ⢿ ⣿ Right-Left, Top-Bottom",
+            "⡀ ⣀ ⣄ ⣤ ⣦ ⣶ ⣷ ⣿ Left-Right, Bottom-Top",
+            "⢀ ⣀ ⣠ ⣤ ⣴ ⣶ ⣾ ⣿ Right-Left, Bottom-Top"
+          ]
         }
       }
     }

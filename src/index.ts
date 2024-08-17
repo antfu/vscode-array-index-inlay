@@ -9,6 +9,7 @@ import { logger } from './utils'
 import { config } from './config'
 import { useEditorDecorations } from './vendor/decorations'
 import { commands, name } from './generated/meta'
+import { dots } from './dots'
 
 const SupportedLanguages = [
   'javascript',
@@ -101,33 +102,43 @@ const { activate, deactivate } = defineExtension(() => {
         const minLength = config.minLength
         const minLines = config.minLines
 
+        let depth = -1
+
         traverse(ast, {
-          ArrayExpression(path) {
-            if (path.node.elements.length < minLength && (path.node.loc!.end.line - path.node.loc!.start.line) < minLines) {
-              return
-            }
-            if (!config.allowSpread && path.node.elements.some(el => el?.type === 'SpreadElement')) {
-              return
-            }
-            const digits = path.node.elements.length.toString().length
-            let hasSpread = false
-            path.node.elements.forEach((el, index) => {
-              if (!el) {
+          ArrayExpression: {
+            exit: () => { depth-- },
+            enter(path) {
+              depth++
+
+              if (path.node.elements.length < minLength && (path.node.loc!.end.line - path.node.loc!.start.line) < minLines) {
                 return
               }
-              const pos = editor.document.positionAt(el.start! + offset)
-              items.push({
-                range: new Range(pos, pos),
-                renderOptions: {
-                  before: {
-                    contentText: `${hasSpread ? '?' : '#'}${index + indexBase}`.padStart(digits + 1, ' '),
-                  },
-                },
-              })
-              if (el.type === 'SpreadElement') {
-                hasSpread = true
+              if (!config.allowSpread && path.node.elements.some(el => el?.type === 'SpreadElement')) {
+                return
               }
-            })
+
+              const depthIndicator = dots[config.depthIndicator]
+              const prefix = depthIndicator ? depthIndicator[depth] || '+' : ''
+              const digits = path.node.elements.length.toString().length
+              let hasSpread = false
+              path.node.elements.forEach((el, index) => {
+                if (!el) {
+                  return
+                }
+                const pos = editor.document.positionAt(el.start! + offset)
+                items.push({
+                  range: new Range(pos, pos),
+                  renderOptions: {
+                    before: {
+                      contentText: `${hasSpread ? '?' : ''}${prefix}${index + indexBase}`.padStart(digits + 1, ' '),
+                    },
+                  },
+                })
+                if (el.type === 'SpreadElement') {
+                  hasSpread = true
+                }
+              })
+            },
           },
         })
       }
