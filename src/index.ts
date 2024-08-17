@@ -159,8 +159,8 @@ const { activate, deactivate } = defineExtension(() => {
     alignment: StatusBarAlignment.Right,
     priority: 100,
     id: name,
-    text: '[#23]',
-    tooltip: 'Toggle array index inlay hints',
+    text: () => config.enabled ? '[#23]' : '[   ]',
+    tooltip: () => `${config.enabled ? 'Disable' : 'Enable'} array index inlay hints`,
     command: commands.toggle,
   }).show()
 })
