@@ -9,7 +9,6 @@ import { logger } from './utils'
 import { config } from './config'
 import { useEditorDecorations } from './vendor/decorations'
 import { commands, name } from './generated/meta'
-import { dots } from './dots'
 
 const SupportedLanguages = [
   'javascript',
@@ -27,6 +26,9 @@ const SupportedLanguages = [
 
 const { activate, deactivate } = defineExtension(() => {
   const editor = useActiveTextEditor()
+
+  const depthColors = config.depthColors.map(c => c.trim()).filter(c => c !== '')
+  const depthBackgroundColors = depthColors.map(color => `color-mix(in srgb, ${color} 10%, transparent)`)
 
   useEditorDecorations(
     editor,
@@ -102,13 +104,23 @@ const { activate, deactivate } = defineExtension(() => {
         const minLength = config.minLength
         const minLines = config.minLines
 
-        let depth = -1
+        let depth = 0
+        const trackDepth = {
+          enter: () => { depth++ },
+          exit: () => { depth-- },
+        }
 
         traverse(ast, {
+          ObjectExpression: trackDepth,
+          BlockStatement: trackDepth,
+          ArrowFunctionExpression: trackDepth,
+          NewExpression: trackDepth,
           ArrayExpression: {
-            exit: () => { depth-- },
-            enter(path) {
+            enter() {
               depth++
+            },
+            exit: (path) => {
+              depth--
 
               if (path.node.elements.length < minLength && (path.node.loc!.end.line - path.node.loc!.start.line) < minLines) {
                 return
@@ -117,8 +129,11 @@ const { activate, deactivate } = defineExtension(() => {
                 return
               }
 
-              const depthIndicator = dots[config.depthIndicator]
-              const prefix = depthIndicator ? depthIndicator[depth] || '+' : ''
+              const colorIndex = depth % depthColors.length
+              const colors = {
+                color: depthColors[colorIndex],
+                backgroundColor: depthBackgroundColors[colorIndex],
+              }
               const digits = path.node.elements.length.toString().length
               let hasSpread = false
               path.node.elements.forEach((el, index) => {
@@ -130,7 +145,8 @@ const { activate, deactivate } = defineExtension(() => {
                   range: new Range(pos, pos),
                   renderOptions: {
                     before: {
-                      contentText: `${hasSpread ? '?' : ''}${prefix}${index + indexBase}`.padStart(digits + 1, ' '),
+                      contentText: `${hasSpread ? '?' : ''}#${index + indexBase}`.padStart(digits + 1, ' '),
+                      ...(config.useDepthColors && colors),
                     },
                   },
                 })
@@ -159,8 +175,8 @@ const { activate, deactivate } = defineExtension(() => {
     alignment: StatusBarAlignment.Right,
     priority: 100,
     id: name,
-    text: '[#23]',
-    tooltip: 'Toggle array index inlay hints',
+    text: () => config.enabled ? '[#23]' : '[   ]',
+    tooltip: () => `${config.enabled ? 'Disable' : 'Enable'} array index inlay hints`,
     command: commands.toggle,
   }).show()
 })

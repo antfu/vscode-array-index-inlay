@@ -2,7 +2,7 @@
   "publisher": "antfu",
   "name": "array-index-inlay",
   "displayName": "Array Index Inlay",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "private": true,
   "packageManager": "pnpm@9.7.1",
   "description": "Inlay hints for index of large arrays",
@@ -72,34 +72,25 @@
           "default": false,
           "description": "Show inlay hints even there are spread operators in the array (will use ? for the items after spread)"
         },
-        "arrayIndexInlay.depthIndicator": {
-          "type": "string",
-          "default": "Simple",
-          "description": "Show a depth indicator for each level of array",
-          "enum": [
-            "Off",
-            "Simple",
-            "Top-Bottom, Left-Right",
-            "Top-Bottom, Right-Left",
-            "Bottom-Top, Left-Right",
-            "Bottom-Top, Right-Left",
-            "Left-Right, Top-Bottom",
-            "Left-Right, Bottom-Top",
-            "Right-Left, Top-Bottom",
-            "Right-Left, Bottom-Top"
+        "arrayIndexInlay.useDepthColors": {
+          "type": "boolean",
+          "default": false,
+          "description": "Color the inlay hint to differentiate levels of the array. Uses `arrayIndexInlay.depthColors` to determine colors"
+        },
+        "arrayIndexInlay.depthColors": {
+          "type": "array",
+          "default": [
+            "var(--vscode-editorBracketHighlight-foreground1)",
+            "var(--vscode-editorBracketHighlight-foreground2)",
+            "var(--vscode-editorBracketHighlight-foreground3)",
+            "var(--vscode-editorBracketHighlight-foreground4)",
+            "var(--vscode-editorBracketHighlight-foreground5)",
+            "var(--vscode-editorBracketHighlight-foreground6)"
           ],
-          "enumDescriptions": [
-            "No depth indicator, shows a # for each index",
-            "Shows 3 levels of depth indicators, ⸱ ꞉ ⋮ then + beyond that",
-            "⠁ ⠃ ⠇ ⡇ ⡏ ⡟ ⡿ ⣿ Top-Bottom, Left-Right",
-            "⠈ ⠘ ⠸ ⢸ ⢹ ⢻ ⢿ ⣿ Top-Bottom, Right-Left",
-            "⡀ ⡄ ⡆ ⡇ ⣇ ⣧ ⣷ ⣿ Bottom-Top, Left-Right",
-            "⢀ ⢠ ⢰ ⢸ ⣸ ⣼ ⣾ ⣿ Bottom-Top, Right-Left",
-            "⠁ ⠉ ⠋ ⠛ ⠟ ⠿ ⡿ ⣿ Left-Right, Top-Bottom",
-            "⠈ ⠉ ⠙ ⠛ ⠻ ⠿ ⢿ ⣿ Right-Left, Top-Bottom",
-            "⡀ ⣀ ⣄ ⣤ ⣦ ⣶ ⣷ ⣿ Left-Right, Bottom-Top",
-            "⢀ ⣀ ⣠ ⣤ ⣴ ⣶ ⣾ ⣿ Right-Left, Bottom-Top"
-          ]
+          "description": "Custom colors for each level of the array. Supports CSS color formats. Select an equal number of colors to your bracket colors to get the best results",
+          "items": {
+            "type": "string"
+          }
         }
       }
     }
