@@ -99,34 +99,64 @@ const { activate, deactivate } = defineExtension(() => {
         const indexBase = config.startIndex
         const minLength = config.minLength
         const minLines = config.minLines
+        const colorizeDepth = config.colorizeDepth
+
+        const depthColors = config.depthColors.map(c => c.trim()).filter(c => c !== '')
+        const depthBackgroundColors = depthColors.map(color => `color-mix(in srgb, ${color} 10%, transparent)`)
+
+        let depth = 0
+        const trackDepth = {
+          enter: () => { depth++ },
+          exit: () => { depth-- },
+        }
 
         traverse(ast, {
-          ArrayExpression(path) {
-            if (path.node.elements.length < minLength && (path.node.loc!.end.line - path.node.loc!.start.line) < minLines) {
-              return
-            }
-            if (!config.allowSpread && path.node.elements.some(el => el?.type === 'SpreadElement')) {
-              return
-            }
-            const digits = path.node.elements.length.toString().length
-            let hasSpread = false
-            path.node.elements.forEach((el, index) => {
-              if (!el) {
+          ObjectExpression: trackDepth,
+          BlockStatement: trackDepth,
+          ArrowFunctionExpression: trackDepth,
+          NewExpression: trackDepth,
+          ArrayExpression: {
+            enter() {
+              depth++
+            },
+            exit: (path) => {
+              depth--
+
+              if (path.node.elements.length < minLength && (path.node.loc!.end.line - path.node.loc!.start.line) < minLines) {
                 return
               }
-              const pos = editor.document.positionAt(el.start! + offset)
-              items.push({
-                range: new Range(pos, pos),
-                renderOptions: {
-                  before: {
-                    contentText: `${hasSpread ? '?' : '#'}${index + indexBase}`.padStart(digits + 1, ' '),
-                  },
-                },
-              })
-              if (el.type === 'SpreadElement') {
-                hasSpread = true
+              if (!config.allowSpread && path.node.elements.some(el => el?.type === 'SpreadElement')) {
+                return
               }
-            })
+
+              const colorIndex = depth % depthColors.length
+              const colors = colorizeDepth
+                ? {
+                    color: depthColors[colorIndex],
+                    backgroundColor: depthBackgroundColors[colorIndex],
+                  }
+                : {}
+              const digits = path.node.elements.length.toString().length
+              let hasSpread = false
+              path.node.elements.forEach((el, index) => {
+                if (!el) {
+                  return
+                }
+                const pos = editor.document.positionAt(el.start! + offset)
+                items.push({
+                  range: new Range(pos, pos),
+                  renderOptions: {
+                    before: {
+                      ...colors,
+                      contentText: `${hasSpread ? '?' : ''}#${index + indexBase}`.padStart(digits + 1, ' '),
+                    },
+                  },
+                })
+                if (el.type === 'SpreadElement') {
+                  hasSpread = true
+                }
+              })
+            },
           },
         })
       }

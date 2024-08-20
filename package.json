@@ -71,6 +71,26 @@
           "type": "boolean",
           "default": false,
           "description": "Show inlay hints even there are spread operators in the array"
+        },
+        "arrayIndexInlay.colorizeDepth": {
+          "type": "boolean",
+          "default": false,
+          "description": "Colorize the inlay hints based on the depth of the array. Colors can be customized with `arrayIndexInlay.depthColors`"
+        },
+        "arrayIndexInlay.depthColors": {
+          "type": "array",
+          "default": [
+            "var(--vscode-editorBracketHighlight-foreground1)",
+            "var(--vscode-editorBracketHighlight-foreground2)",
+            "var(--vscode-editorBracketHighlight-foreground3)",
+            "var(--vscode-editorBracketHighlight-foreground4)",
+            "var(--vscode-editorBracketHighlight-foreground5)",
+            "var(--vscode-editorBracketHighlight-foreground6)"
+          ],
+          "description": "Custom colors for each level of the array. Supports CSS color formats. Select an equal number of colors to your bracket colors to get the best results.",
+          "items": {
+            "type": "string"
+          }
         }
       }
     }

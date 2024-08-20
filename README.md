@@ -21,13 +21,15 @@ Show array index inlay hints for large arrays.<br>
 
 <!-- configs -->
 
-| Key                           | Description                                                   | Type      | Default |
-| ----------------------------- | ------------------------------------------------------------- | --------- | ------- |
-| `arrayIndexInlay.enabled`     | Enable inlay hints                                            | `boolean` | `true`  |
-| `arrayIndexInlay.minLength`   | Minimum length of array to show inlay hints                   | `number`  | `15`    |
-| `arrayIndexInlay.minLines`    | Minimum lines of array to show inlay hints                    | `number`  | `30`    |
-| `arrayIndexInlay.startIndex`  | Start index of the array, default to 0                        | `number`  | `0`     |
-| `arrayIndexInlay.allowSpread` | Show inlay hints even there are spread operators in the array | `boolean` | `false` |
+| Key                             | Description                                                                                                                                             | Type      | Default          |
+| ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- | ---------------- |
+| `arrayIndexInlay.enabled`       | Enable inlay hints                                                                                                                                      | `boolean` | `true`           |
+| `arrayIndexInlay.minLength`     | Minimum length of array to show inlay hints                                                                                                             | `number`  | `15`             |
+| `arrayIndexInlay.minLines`      | Minimum lines of array to show inlay hints                                                                                                              | `number`  | `30`             |
+| `arrayIndexInlay.startIndex`    | Start index of the array, default to 0                                                                                                                  | `number`  | `0`              |
+| `arrayIndexInlay.allowSpread`   | Show inlay hints even there are spread operators in the array                                                                                           | `boolean` | `false`          |
+| `arrayIndexInlay.colorizeDepth` | Colorize the inlay hints based on the depth of the array. Colors can be customized with `arrayIndexInlay.depthColors`                                   | `boolean` | `false`          |
+| `arrayIndexInlay.depthColors`   | Custom colors for each level of the array. Supports CSS color formats. Select an equal number of colors to your bracket colors to get the best results. | `array`   | See package.json |
 
 <!-- configs -->
 
