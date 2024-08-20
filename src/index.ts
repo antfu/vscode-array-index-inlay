@@ -1,4 +1,4 @@
-import { defineExtension, useActiveTextEditor, useCommand, useStatusBarItem } from 'reactive-vscode'
+import { defineExtension, useActiveTextEditor, useCommand, useEditorDecorations, useStatusBarItem } from 'reactive-vscode'
 import type { DecorationOptions } from 'vscode'
 import { ConfigurationTarget, Range, StatusBarAlignment } from 'vscode'
 import { parseSync } from '@babel/core'
@@ -7,7 +7,6 @@ import traverse from '@babel/traverse'
 import preset from '@babel/preset-typescript'
 import { logger } from './utils'
 import { config } from './config'
-import { useEditorDecorations } from './vendor/decorations'
 import { commands, name } from './generated/meta'
 
 const SupportedLanguages = [
@@ -26,9 +25,6 @@ const SupportedLanguages = [
 
 const { activate, deactivate } = defineExtension(() => {
   const editor = useActiveTextEditor()
-
-  const depthColors = config.depthColors.map(c => c.trim()).filter(c => c !== '')
-  const depthBackgroundColors = depthColors.map(color => `color-mix(in srgb, ${color} 10%, transparent)`)
 
   useEditorDecorations(
     editor,
@@ -103,6 +99,10 @@ const { activate, deactivate } = defineExtension(() => {
         const indexBase = config.startIndex
         const minLength = config.minLength
         const minLines = config.minLines
+        const colorizeDepth = config.colorizeDepth
+
+        const depthColors = config.depthColors.map(c => c.trim()).filter(c => c !== '')
+        const depthBackgroundColors = depthColors.map(color => `color-mix(in srgb, ${color} 10%, transparent)`)
 
         let depth = 0
         const trackDepth = {
@@ -130,10 +130,12 @@ const { activate, deactivate } = defineExtension(() => {
               }
 
               const colorIndex = depth % depthColors.length
-              const colors = {
-                color: depthColors[colorIndex],
-                backgroundColor: depthBackgroundColors[colorIndex],
-              }
+              const colors = colorizeDepth
+                ? {
+                    color: depthColors[colorIndex],
+                    backgroundColor: depthBackgroundColors[colorIndex],
+                  }
+                : {}
               const digits = path.node.elements.length.toString().length
               let hasSpread = false
               path.node.elements.forEach((el, index) => {
@@ -145,8 +147,8 @@ const { activate, deactivate } = defineExtension(() => {
                   range: new Range(pos, pos),
                   renderOptions: {
                     before: {
+                      ...colors,
                       contentText: `${hasSpread ? '?' : ''}#${index + indexBase}`.padStart(digits + 1, ' '),
-                      ...(config.useDepthColors && colors),
                     },
                   },
                 })

@@ -70,9 +70,9 @@
         "arrayIndexInlay.allowSpread": {
           "type": "boolean",
           "default": false,
-          "description": "Show inlay hints even there are spread operators in the array (will use ? for the items after spread)"
+          "description": "Show inlay hints even there are spread operators in the array"
         },
-        "arrayIndexInlay.depthColorize": {
+        "arrayIndexInlay.colorizeDepth": {
           "type": "boolean",
           "default": false,
           "description": "Colorize the inlay hints based on the depth of the array. Colors can be customized with `arrayIndexInlay.depthColors`"
@@ -115,7 +115,7 @@
     "@babel/preset-typescript": "^7.24.7",
     "@babel/traverse": "^7.25.3",
     "@types/babel__core": "^7.20.5",
-    "@types/node": "^22.4.0",
+    "@types/node": "^22.4.1",
     "@types/vscode": "1.90.0",
     "@vscode/vsce": "^3.0.0",
     "acorn": "^8.12.1",
@@ -126,11 +126,11 @@
     "eslint-plugin-format": "^0.1.2",
     "esno": "^4.7.0",
     "pnpm": "^9.7.1",
-    "reactive-vscode": "^0.2.0",
+    "reactive-vscode": "^0.2.1",
     "tsup": "^8.2.4",
     "typescript": "^5.5.4",
-    "vite": "^5.4.1",
+    "vite": "^5.4.2",
     "vitest": "^2.0.5",
-    "vscode-ext-gen": "^0.3.7"
+    "vscode-ext-gen": "^0.4.2"
   }
 }
