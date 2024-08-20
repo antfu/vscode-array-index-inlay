@@ -1,4 +1,4 @@
-import { defineExtension, useActiveTextEditor, useCommand, useStatusBarItem } from 'reactive-vscode'
+import { defineExtension, useActiveTextEditor, useCommand, useEditorDecorations, useStatusBarItem } from 'reactive-vscode'
 import type { DecorationOptions } from 'vscode'
 import { ConfigurationTarget, Range, StatusBarAlignment } from 'vscode'
 import { parseSync } from '@babel/core'
@@ -7,7 +7,6 @@ import traverse from '@babel/traverse'
 import preset from '@babel/preset-typescript'
 import { logger } from './utils'
 import { config } from './config'
-import { useEditorDecorations } from './vendor/decorations'
 import { commands, name } from './generated/meta'
 
 const SupportedLanguages = [
