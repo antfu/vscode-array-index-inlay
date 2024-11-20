@@ -4,7 +4,9 @@ import { ConfigurationTarget, Range, StatusBarAlignment } from 'vscode'
 import { parseSync } from '@babel/core'
 import traverse from '@babel/traverse'
 // @ts-expect-error missing types
-import preset from '@babel/preset-typescript'
+import presetTs from '@babel/preset-typescript'
+// @ts-expect-error missing types
+import presetJsx from '@babel/preset-react'
 import { logger } from './utils'
 import { config } from './config'
 import { commands, name } from './generated/meta'
@@ -87,7 +89,7 @@ const { activate, deactivate } = defineExtension(() => {
           text,
           {
             filename: editor.document.uri.fsPath,
-            presets: [preset],
+            presets: [presetTs, presetJsx],
             babelrc: false,
           },
         )
