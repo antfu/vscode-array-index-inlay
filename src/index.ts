@@ -7,6 +7,8 @@ import traverse from '@babel/traverse'
 import presetTs from '@babel/preset-typescript'
 // @ts-expect-error missing types
 import presetJsx from '@babel/preset-react'
+// @ts-expect-error missing types
+import pluginDecorators from '@babel/plugin-syntax-decorators'
 import { logger } from './utils'
 import { config } from './config'
 import { commands, name } from './generated/meta'
@@ -91,6 +93,7 @@ const { activate, deactivate } = defineExtension(() => {
             filename: editor.document.uri.fsPath,
             presets: [presetTs, presetJsx],
             babelrc: false,
+            plugins: [[pluginDecorators, { decoratorsBeforeExport: true }]],
           },
         )
 
