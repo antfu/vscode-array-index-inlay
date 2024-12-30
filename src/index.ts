@@ -1,17 +1,17 @@
-import { defineExtension, useActiveTextEditor, useCommand, useEditorDecorations, useStatusBarItem } from 'reactive-vscode'
 import type { DecorationOptions } from 'vscode'
-import { ConfigurationTarget, Range, StatusBarAlignment } from 'vscode'
 import { parseSync } from '@babel/core'
-import traverse from '@babel/traverse'
 // @ts-expect-error missing types
-import presetTs from '@babel/preset-typescript'
+import pluginDecorators from '@babel/plugin-syntax-decorators'
 // @ts-expect-error missing types
 import presetJsx from '@babel/preset-react'
 // @ts-expect-error missing types
-import pluginDecorators from '@babel/plugin-syntax-decorators'
-import { logger } from './utils'
+import presetTs from '@babel/preset-typescript'
+import traverse from '@babel/traverse'
+import { defineExtension, useActiveTextEditor, useCommand, useEditorDecorations, useStatusBarItem } from 'reactive-vscode'
+import { ConfigurationTarget, Range, StatusBarAlignment } from 'vscode'
 import { config } from './config'
 import { commands, name } from './generated/meta'
+import { logger } from './utils'
 
 const SupportedLanguages = [
   'javascript',
