@@ -112,6 +112,7 @@
     "@antfu/eslint-config": "^2.27.3",
     "@antfu/ni": "^0.23.1",
     "@babel/core": "^7.26.0",
+    "@babel/plugin-syntax-decorators": "^7.25.9",
     "@babel/preset-react": "^7.25.9",
     "@babel/preset-typescript": "^7.26.0",
     "@babel/traverse": "^7.25.9",
